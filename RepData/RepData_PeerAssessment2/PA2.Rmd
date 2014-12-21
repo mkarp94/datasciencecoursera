@@ -1,0 +1,35 @@
+---
+MKarp
+title: "Reproducible Research: Peer Assessment 2"
+output: html_document
+keep_md: true
+---
+  
+  
+## Loading and preprocessing the data
+```{r, echo = TRUE}
+setwd("/Users/MKarp/datasciencecoursera/RepData/RepData_PeerAssessment2")
+storm_data = read.csv("repdata-data-StormData.csv")
+# inspect storm data
+str(storm_data)
+summary(storm_data)
+```
+
+## Across the United States, which types of events (as indicated in the EVTYPE variable) 
+## are most harmful with respect to population health?
+```{r, echo = TRUE}
+# Plot injuries + fatalities plotted against evtype
+library(ggplot2)
+plot <- ggplot(storm_data, aes(EVTYPE, (FATALITIES+INJURIES))) +
+  geom_point() 
+```
+
+## Across the United States, which types of events have the greatest economic consequences?
+```{r, echo = TRUE}
+plot2 <- ggplot(storm_data, aes(EVTYPE, (CROPDMG+PROPDMG))) +
+  geom_point() 
+library(knitr)
+```
+
+
+
