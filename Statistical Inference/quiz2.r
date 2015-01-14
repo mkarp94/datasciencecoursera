@@ -1,5 +1,5 @@
 # MKarp94 
-# 1/6/15
+# 1/14/15
 # Coursera - Statistical Inference - Data Science Specialization
 # quiz2.R
 
