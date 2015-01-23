@@ -1,0 +1,39 @@
+---
+author: "Michael Karp"
+title: "Peer Assessment on ToothGrowth data - Data Science Specialization"
+date: 1/22/2014
+output: 
+html_document:
+keep_md: true
+---
+
+
+
+# Investigating the tooth growth dataset
+```{r, echo = TRUE, results = 'asis'}
+# set seed to make research reproducible
+set.seed(1000)
+# Load the ToothGrowth data and perform some basic exploratory data analyses 
+library(datasets)
+hist(ToothGrowth$len)
+hist(ToothGrowth$dose)
+table(ToothGrowth$supp == "VC", ToothGrowth$len > 18.81)
+table(ToothGrowth$supp == "OJ", ToothGrowth$len > 18.81)
+
+plot(ToothGrowth$len~ToothGrowth$dose)
+library(ggplot2)
+exp_plot <- ggplot(data = ToothGrowth, aes(x = dose, y = len)) + geom_point() + facet_grid(supp~.)
+exp_plot
+
+# Provide a basic summary of the data.
+str(ToothGrowth)
+summary(ToothGrowth)
+
+# Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose. (Only use the techniques 
+# from class, even if there's other approaches worth considering)
+# H_0 <- mean(dose) == 1.167
+# H_a <- mean(dose) > 30
+
+
+# State your conclusions and the assumptions needed for your conclusions.
+```

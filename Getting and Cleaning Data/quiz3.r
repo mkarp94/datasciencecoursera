@@ -4,15 +4,16 @@
 
 if(!file.exists("./data")){dir.create("./data")}
 fileUrl1 = "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv"
-download.file(fileUrl1,destfile="./data/reviews.csv",method="curl")
-housing = read.csv("./data/reviews.csv")
+download.file(fileUrl1,destfile="./data/housing.csv",method="curl")
+housing = read.csv("./data/housing.csv")
 
 # Inspect Data
 str(housing)
 summary(housing)
 
 # q1 - Identify first 3 rows of where 10+ acres were sold and 10K+ worth of product were sold
-which(housing$ACR == 3 & housing$AGS == 6)
+tenplusacres_tenplusproducts <- which(housing$ACR == 3 & housing$AGS == 6)
+tenplusacres_tenplusproducts[1:3]
 
 # q2 - Read Jpeg
 library(jpeg)
