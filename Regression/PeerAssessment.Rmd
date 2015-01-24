@@ -1,0 +1,53 @@
+---
+author: "Michael Karp"
+title: "Peer Assessment on Regression Models - Data Science Specialization"
+date: 1/22/2015
+output: 
+html_document:
+keep_md: true
+---
+  
+
+## Executive Summary
+In this project I will investigate the mtcars dataset that comes with R. As noted in the data dictionary for this problem
+"The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobie 
+design and performance for 32 automobiles (1973–74 models)." 
+
+I will address the following points:
+“Is an automatic or manual transmission better for MPG?” 
+  - manual is better
+
+"Quantify the MPG difference between automatic and manual transmissions" 
+ - on average a car with manual transmission will get 7.245 mpg
+
+
+```{r, echo = TRUE, results = 'asis'}
+# always set seed to make research reproducible
+set.seed(1000)
+# inspect dataset
+str(mtcars)
+summary(mtcars)
+
+par(mfrow = c(1,2))
+# boxplot for automatic transmission
+boxplot(mtcars$mpg[mtcars$am == 0])
+# boxplot for manual transmission
+boxplot(mtcars$mpg[mtcars$am == 1])
+
+par(mfrow = c(1,1))
+library(ggplot2)
+mpg_trans_plot <- ggplot(data = mtcars, aes(x = wt, y = mpg)) + geom_point() + xlab("weight") + ylab("MPG") + facet_grid(.~am)
+mpg_trans_plot
+# clearly lower weight manual transmission cars have the highest mpg ratio
+
+mpg_fit <- lm(data = mtcars, formula = mpg ~ am)
+summary(mpg_fit)
+
+# in quantifying the difference betwwen manual and automatic transmission I will assess the mean, median, and standard
+# deviations for each of two optins
+
+tapply(mtcars$mpg, mtcars$am, median)
+tapply(mtcars$mpg, mtcars$am, mean)
+tapply(mtcars$mpg, mtcars$am, sd)
+
+```

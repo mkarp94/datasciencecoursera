@@ -1,7 +1,7 @@
 ---
 author: "Michael Karp"
 title: "Peer Assessment on Statistical Inference and the CLT - Data Science Specialization"
-date: 1/22/2014
+date: 1/22/2015
 output: 
 html_document:
 keep_md: true

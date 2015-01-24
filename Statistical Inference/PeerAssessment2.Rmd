@@ -1,12 +1,12 @@
 ---
 author: "Michael Karp"
 title: "Peer Assessment on ToothGrowth data - Data Science Specialization"
-date: 1/22/2014
+date: 1/22/2015
 output: 
 html_document:
 keep_md: true
 ---
-
+  
 
 
 # Investigating the tooth growth dataset
