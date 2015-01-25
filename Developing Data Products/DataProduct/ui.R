@@ -16,7 +16,9 @@ shinyUI(pageWithSidebar(
     selectInput("variable", "Variable:",
                 list("Goal Difference" = "Goal_Differential", 
                      "Shot Difference" = "Shot_Differential", 
-                     "Points" = "P"))
+                     "Points" = "P", "Wins" = "W", "Losses" = "L",
+                     "Overtime Losses" = "OT", "Power Play %" = "PP.", 
+                     "Penalty Kill %" = "PK.", "FaceOff %" = "FO."))
   ),
   
   # Show the caption and plot of the requested variable against seasons

@@ -42,16 +42,29 @@ shinyServer(function(input, output) {
     averages_df$season_avg <- season_avg
     averages_df$playoff_avg <- playoff_avg
     averages_df$winners <- winners  
+    hockey_winners <- subset(hockey, hockey$StanleyCup == 1)
+    SC_winners <- as.character(hockey_winners$Team); SC_winners[10] <- "Unknown"
+    averages_df$SC_winners <- SC_winners
     str(averages_df)
     
     ylabel <- input$variable
-    if(ylabel == "P") 
+    if(input$variable == "P") 
       ylabel <- "Points"
+    else if (input$variable == "FO.") 
+      ylabel <- "Face Off %"
+    else if (input$variable == "PP.") 
+      ylabel <- "Power Play %"
+    else if (input$variable == "PK.") 
+      ylabel <- "Penalty Kill %"
+    else 
+      ylabel <- input$variable
+    
     library(ggplot2)
+
     plot <-  ggplot(data = averages_df, aes(x=seasons)) + xlab("Season") + ylab(ylabel) + 
-      geom_point(aes(y=winners, color="winners")) + 
-      geom_point(aes(y=playoff_avg, color="playoff_avg")) + 
-      geom_point(aes(y=season_avg, color="season_avg")) 
+      geom_point(aes(y=season_avg, shape="season_avg")) +
+      geom_point(aes(y=playoff_avg, shape="playoff_avg")) + 
+      geom_point(aes(y=winners, shape="winners", color =SC_winners))  
     print(plot)
   })
   
