@@ -18,13 +18,20 @@
 hockey = read.csv("hockey.csv")
 str(hockey)
 
+# Allow user to determine which stat to graph as the difference between the
+# stanley cup winner vs playoff teams vs all teams
+# stats allowed for us use: Points, Goal_differential, shot_differential
+
+
 # Compute Goal Difference
-hockey$GD.GP = hockey$G.GP - hockey$GA.GP
+hockey$Goal_Differential = (hockey$G.GP - hockey$GA.GP)*82
 hockey$Goals = hockey$G.GP*82
 hockey$GoalsAgainst = hockey$GA.GP*82
-hockey$Shots = hockey$S.GP*82
+# Compute Shot Difference
+hockey$Shot_Differential = (hockey$S.GP-hockey$SA.GP) *82
 hockey$Playoffs <- as.factor(hockey$Playoffs)
 hockey$StanleyCup <- as.factor(hockey$StanleyCup)
+
 
 
 current_season <- hockey[hockey$Season == "2014-2015",]
@@ -32,6 +39,15 @@ hockey_old <- hockey[hockey$Season != "2014-2015",]
 
 # Logistic Regression Model to predict Stanley Cup Winner
 Stanley_reg <- glm(StanleyCup~Goals+GoalsAgainst+Shots+Conference+Team+FO.+PP.+PK.+P+OT+Playoffs, data = hockey_old, family=binomial)
+
+# Number of folds
+tr.control = trainControl(method = "cv", number = 10)
+
+# cross validation - randomForest
+Stanley_rf = train(StanleyCup~Goal_Differential+P.+Shot_Differential, data = hockey_old, method = "rf", metric = "Accuracy", trControl = tr.control, na.rm = TRUE)
+# error rate
+print(Stanley_rf)
+predictTest <- predict(Stanley_rf, type = "prob", newdata = current_season)
 
 # Regression model to predict wins
 WinsReg = lm(W ~ G.GP+GA.GP+PP.+PK.+S.GP+SA.GP+FO.+Team+Conference, data=hockey_old)

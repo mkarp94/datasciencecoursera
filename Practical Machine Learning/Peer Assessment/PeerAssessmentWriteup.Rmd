@@ -79,7 +79,7 @@ exercise_rf_cv = train(classe ~roll_belt+total_accel_belt+pitch_belt, data = tra
 print(exercise_rf)
 # 0.2655218
 
-predictTest <- predict(exercise_cart, type = "raw", newdata = test)
+predictTest <- predict(exercise_rf, type = "raw", newdata = test)
 answers <- as.character(predictTest)
 answers 
 

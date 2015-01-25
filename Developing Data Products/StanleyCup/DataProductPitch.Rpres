@@ -1,0 +1,21 @@
+The Stanley Cup Difference
+===
+author: Michael Karp
+date: `r format(Sys.Date(), format="%B %d %Y")`
+transition: rotate
+
+<small> 
+NHL.com Statistical data visualizations
+</small>
+
+
+The Stanley Cup Difference
+===
+- This is an application that will allow users to visualize the following
+    - and on a season by season basis
+    - broken up in the following ways
+    - all team averages, playoff team averages, and stanley cup winner stats
+    - for Goal & Shot Differentials as well as regular season points
+
+
+

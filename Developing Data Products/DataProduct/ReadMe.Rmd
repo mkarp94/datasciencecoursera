@@ -1,0 +1,19 @@
+---
+author: "Michael Karp"
+title: "Developing Data Products - The Stanley Cup Difference - Data Science Specialization"
+date: 1/25/2015
+output: 
+html_document:
+keep_md: true
+---
+
+## The Stanley Cup Difference
+- This is an application that will allow users to visualize the following
+- and on a season by season basis
+- broken up in the following ways
+- all team averages, playoff team averages, and stanley cup winner stats
+- for Goal & Shot Differentials as well as regular season points
+
+## Using the application
+All the user needs to do is request the specific stat they would like to view 
+the graphical depictions of
