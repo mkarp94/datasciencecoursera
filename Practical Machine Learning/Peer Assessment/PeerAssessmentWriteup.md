@@ -87,6 +87,36 @@ prp(exercise_cart)
 ![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-2.png) 
 
 ```r
+# error rate
+printcp(exercise_cart)
+```
+
+
+Classification tree:
+rpart(formula = classe ~ roll_belt + total_accel_belt + pitch_belt, 
+    data = train, method = "class", xval = 10)
+
+Variables actually used in tree construction:
+[1] pitch_belt roll_belt 
+
+Root node error: 14042/19622 = 0.71563
+
+n= 19622 
+
+        CP nsplit rel error  xerror      xstd
+1 0.115155      0   1.00000 1.00000 0.0045002
+2 0.035821      1   0.88485 0.88485 0.0048075
+3 0.025808      2   0.84902 0.84924 0.0048707
+4 0.016059      9   0.65760 0.65810 0.0049794
+5 0.014101     11   0.62548 0.62641 0.0049611
+6 0.013958     12   0.61138 0.61580 0.0049526
+7 0.013246     13   0.59742 0.59913 0.0049369
+8 0.013104     15   0.57093 0.57741 0.0049121
+9 0.010000     16   0.55783 0.55911 0.0048873
+
+```r
+# 0.71563
+
 predictTest <- predict(exercise_cart, type = "class", newdata = test)
 answers <- as.character(predictTest)
 answers 

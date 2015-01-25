@@ -65,6 +65,10 @@ best.tree$variable.importance[1:10]
 # cross validation - rpart
 exercise_cart = rpart(classe ~roll_belt+total_accel_belt+pitch_belt, data = train, method = "class", xval = 10)
 prp(exercise_cart)
+# error rate
+printcp(exercise_cart)
+# 0.71563
+
 predictTest <- predict(exercise_cart, type = "class", newdata = test)
 answers <- as.character(predictTest)
 answers 
