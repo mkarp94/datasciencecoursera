@@ -1,7 +1,7 @@
 Stanley Cup Difference
 ===
 author: Michael Karp
-date: `r format(Sys.Date(), format="%B %d %Y")`
+date: January 25 2015
 transition: rotate
 
 <small> 
