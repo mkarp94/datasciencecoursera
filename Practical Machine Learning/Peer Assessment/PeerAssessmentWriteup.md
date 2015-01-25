@@ -12,7 +12,8 @@ Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible t
 The data for this project come from this source: http://groupware.les.inf.puc-rio.br/har.
 
 
-```{r, echo = TRUE, results = 'asis'}
+
+```r
 # The goal of your project is to predict the manner in which they did the exercise. This is the "classe" variable in the
 # training set. You may use any of the other variables to predict with. You should create a report describing how you 
 # built your model, how you used cross validation, what you think the expected out of sample error is, and why you made 
@@ -60,16 +61,41 @@ best.tree = exercise_cv_cart$finalModel
 library(rpart.plot)
 # extract important features using the tree
 prp(best.tree)
-best.tree$variable.importance[1:10]
+```
 
+![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png) 
+
+```r
+best.tree$variable.importance[1:10]
+```
+
+    stddev_roll_belt        var_roll_belt var_total_accel_belt 
+            47.46829             47.46829             41.05366 
+amplitude_pitch_belt        avg_roll_belt  amplitude_roll_belt 
+            39.12927             26.94146             25.65854 
+                <NA>                 <NA>                 <NA> 
+                  NA                   NA                   NA 
+                <NA> 
+                  NA 
+
+```r
 # cross validation - rpart
 exercise_cart = rpart(classe ~roll_belt+total_accel_belt+pitch_belt, data = train, method = "class", xval = 10)
 prp(exercise_cart)
+```
+
+![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-2.png) 
+
+```r
 predictTest <- predict(exercise_cart, type = "class", newdata = test)
 answers <- as.character(predictTest)
 answers 
+```
 
+ [1] "A" "A" "B" "D" "A" "E" "A" "A" "A" "A" "A" "A" "B" "A" "D" "A" "A"
+[18] "A" "A" "B"
 
+```r
 # pml_write_files = function(x){
 #   n = length(x)
 #   for(i in 1:n){
