@@ -73,6 +73,16 @@ predictTest <- predict(exercise_cart, type = "class", newdata = test)
 answers <- as.character(predictTest)
 answers 
 
+# cross validation - randomForest
+exercise_rf_cv = train(classe ~roll_belt+total_accel_belt+pitch_belt, data = train, method = "rf", metric = "Accuracy", trControl = tr.control)
+# error rate
+print(exercise_rf)
+# 0.2655218
+
+predictTest <- predict(exercise_cart, type = "raw", newdata = test)
+answers <- as.character(predictTest)
+answers 
+
 
 # pml_write_files = function(x){
 #   n = length(x)

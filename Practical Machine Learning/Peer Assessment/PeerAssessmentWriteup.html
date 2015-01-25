@@ -316,6 +316,33 @@ answers
 <p>[1] &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;B&rdquo; &ldquo;D&rdquo; &ldquo;A&rdquo; &ldquo;E&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;B&rdquo; &ldquo;A&rdquo; &ldquo;D&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo;
 [18] &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;B&rdquo;</p>
 
+<pre><code class="r"># cross validation - randomForest
+exercise_rf_cv = train(classe ~roll_belt+total_accel_belt+pitch_belt, data = train, method = &quot;rf&quot;, metric = &quot;Accuracy&quot;, trControl = tr.control)
+</code></pre>
+
+<p>note: only 2 unique complexity parameters in default grid. Truncating the grid to 2 .</p>
+
+<pre><code class="r"># error rate
+print(exercise_rf)
+</code></pre>
+
+<pre><code>## Error in print(exercise_rf): object &#39;exercise_rf&#39; not found
+</code></pre>
+
+<pre><code class="r"># 0.2655218
+
+predictTest &lt;- predict(exercise_cart, type = &quot;raw&quot;, newdata = test)
+</code></pre>
+
+<pre><code>## Error in match.arg(type): &#39;arg&#39; should be one of &quot;vector&quot;, &quot;prob&quot;, &quot;class&quot;, &quot;matrix&quot;
+</code></pre>
+
+<pre><code class="r">answers &lt;- as.character(predictTest)
+answers 
+</code></pre>
+
+<p>[1] &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;B&rdquo; &ldquo;D&rdquo; &ldquo;A&rdquo; &ldquo;E&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;B&rdquo; &ldquo;A&rdquo; &ldquo;D&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;A&rdquo; &ldquo;B&rdquo;</p>
+
 <pre><code class="r"># pml_write_files = function(x){
 #   n = length(x)
 #   for(i in 1:n){

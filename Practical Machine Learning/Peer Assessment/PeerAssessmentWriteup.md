@@ -126,6 +126,39 @@ answers
 [18] "A" "A" "B"
 
 ```r
+# cross validation - randomForest
+exercise_rf_cv = train(classe ~roll_belt+total_accel_belt+pitch_belt, data = train, method = "rf", metric = "Accuracy", trControl = tr.control)
+```
+
+note: only 2 unique complexity parameters in default grid. Truncating the grid to 2 .
+
+```r
+# error rate
+print(exercise_rf)
+```
+
+```
+## Error in print(exercise_rf): object 'exercise_rf' not found
+```
+
+```r
+# 0.2655218
+
+predictTest <- predict(exercise_cart, type = "raw", newdata = test)
+```
+
+```
+## Error in match.arg(type): 'arg' should be one of "vector", "prob", "class", "matrix"
+```
+
+```r
+answers <- as.character(predictTest)
+answers 
+```
+
+ [1] "A" "A" "B" "D" "A" "E" "A" "A" "A" "A" "A" "A" "B" "A" "D" "A" "A" "A" "A" "B"
+
+```r
 # pml_write_files = function(x){
 #   n = length(x)
 #   for(i in 1:n){
