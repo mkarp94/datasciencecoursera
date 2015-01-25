@@ -7,7 +7,7 @@ html_document:
 keep_md: true
 ---
 
-```{r, echo = TRUE, eval=TRUE}
+```{r, echo = TRUE, results ='asis'}
 # q1 - Load the cell segmentation data from the AppliedPredictiveModeling package using the commands:
 library(AppliedPredictiveModeling)
 data(segmentationOriginal)
@@ -45,7 +45,7 @@ fancyRpartPlot(segment_cart)
 # Under leave one out cross validation K is equal to the sample size.
 ``` 
 
-```{r, echo = TRUE, eval=TRUE}
+```{r, echo = TRUE, results ='asis'}
 # q3 - Load the olive oil data using the commands:
 library(pgmm)
 data(olive)
@@ -58,7 +58,7 @@ newdata = as.data.frame(t(colMeans(olive)))
 olive_pred <- predict(olive_cart, newdata = newdata)
 olive_pred
 ````
-```{r, echo = TRUE, eval=TRUE}
+```{r, echo = TRUE, results ='asis'}
 # q4 - Load the South Africa Heart Disease Data and create training and test sets with the following code:
 library(ElemStatLearn)
 data(SAheart)
@@ -81,7 +81,7 @@ train_misclass
 test_misclass <- missClass(testSA$chd, predict(saheart_logistic, testSA))
 test_misclass
 ```
-```{r, echo = TRUE, eval=TRUE}
+```{r, echo = TRUE, results ='asis'}
 # q5 - Load the vowel.train and vowel.test data sets:
 library(ElemStatLearn)
 data(vowel.train)
