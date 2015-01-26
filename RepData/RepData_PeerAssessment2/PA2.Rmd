@@ -1,6 +1,6 @@
 ---
-MKarp
-title: "Reproducible Research: Peer Assessment 2"
+author: "MKarp"
+title: "Reproducible Research: Peer Assessment"
 output: html_document
 keep_md: true
 ---
@@ -8,6 +8,8 @@ keep_md: true
   
 ## Loading and preprocessing the data
 ```{r, echo = TRUE}
+# Synopsis
+# This dataset is composed of events and their related consequence from a casualty and economic risk perspective
 setwd("/Users/MKarp/datasciencecoursera/RepData/RepData_PeerAssessment2")
 storm_data = read.csv("repdata-data-StormData.csv")
 # inspect storm data
@@ -17,18 +19,35 @@ summary(storm_data)
 
 ## Across the United States, which types of events (as indicated in the EVTYPE variable) 
 ## are most harmful with respect to population health?
-```{r, echo = TRUE}
+```{r, echo = TRUE, results = 'asis'}
 # Plot injuries + fatalities plotted against evtype
+bad_storm_cutoffs <- quantile(storm_data$INJURIES, probs = 0.999)
+bad_storms_events <- subset(x = storm_data, storm_data$INJURIES > bad_storm_cutoffs )
 library(ggplot2)
-plot <- ggplot(storm_data, aes(EVTYPE, (FATALITIES+INJURIES))) +
-  geom_point() 
+plot <- ggplot(data = bad_storms_events, aes(y = EVTYPE)) +
+  geom_point(aes(x=INJURIES, color = "INJURIES")) + 
+  geom_point(aes(x=FATALITIES, color = "FATALITIES"))
+print(plot)
+# Here we can see tornados and floods are clearly the highest risk events in terms of causualties
+# I've subsetted this dataset to only contain those event types whose injury count falls above the 99.9%
+# The cutoff was at 25 injuries
+# Other than the events mentioned HEAT related incidents seem to be among the highest casualty rates
 ```
 
 ## Across the United States, which types of events have the greatest economic consequences?
-```{r, echo = TRUE}
-plot2 <- ggplot(storm_data, aes(EVTYPE, (CROPDMG+PROPDMG))) +
-  geom_point() 
-library(knitr)
+```{r, echo = TRUE, results = 'asis'}
+bad_storm_cutoffs2 <- quantile(storm_data$PROPDMG, probs = 0.999)
+bad_storm_cutoffs3 <- quantile(storm_data$CROPDMG, probs = 0.9999)
+bad_storms_events2 <- subset(x = storm_data, 
+                            storm_data$PROPDMG > bad_storm_cutoffs2 | storm_data$PROPDMG > bad_storm_cutoffs3)
+plot2 <- ggplot(bad_storms_events2, aes(y = EVTYPE)) + 
+  geom_point(aes(x=CROPDMG, color = "CROPDMG")) + 
+  geom_point(aes(x=PROPDMG, color = "PROPDMG)"))
+print(plot2)
+# From this second plot we're able to determine that the leading cause of property and crop damages are 
+# water related incidents whether from a waterspout or thunderstorms or flooding. Wind related incidents 
+# such as tornados and headwinds cause massive propeerty damages as well.
+# library(knitr)
 ```
 
 
