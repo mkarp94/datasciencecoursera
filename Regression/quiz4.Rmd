@@ -1,0 +1,56 @@
+---
+author: "Michael Karp"
+title: "Regression - Quiz4 - Data Science Specialization"
+date: 1/30/2015
+output: 
+html_document:
+keep_md: true
+---
+  
+```{r, echo = TRUE, results ='asis'}
+# q1 - Consider the space shuttle data ?shuttle in the MASS library. Consider modeling the use of the autolander as the 
+# outcome (variable name use). Fit a l  ogistic regression model with autolander (variable auto) use (labeled as "auto" 1) 
+# versus not (0) as predicted by wind sign (variable wind). Give the estimated odds ratio for autolander use comparing 
+# head winds, labeled as "head" in the variable headwind (numerator) to tail winds (denominator).
+library(MASS)
+logistic_auto <- glm(data = shuttle, formula = use~wind, family = "binomial")
+exp(coefficients(logistic_auto))
+```
+```{r, echo = TRUE, results ='asis'}
+# q2 - Consider the previous problem. Give the estimated odds ratio for autolander use comparing head winds (numerator) 
+# to tail winds (denominator) adjusting for wind strength from the variable magn.
+logistic_auto2 <- glm(data = shuttle, formula = use~wind+magn, family = "binomial")
+exp(coefficients(logistic_auto2))
+
+```
+```{r, echo = TRUE, results ='asis'}
+# q3 - If you fit a logistic regression model to a binary variable, for example use of the autolander, then fit a 
+# logistic regression model for one minus the outcome (not using the autolander) what happens to the coefficients?
+shuttle$dummy <- ifelse(shuttle$use == "auto", 0, 1)
+logistic_auto3_1 <- glm(data = shuttle, formula = dummy~wind, family = "binomial")
+coefficients(logistic_auto3_1)
+shuttle$dummy <- ifelse(shuttle$use == "auto", 1, 0)
+logistic_auto3_2 <- glm(data = shuttle, formula = dummy~wind, family = "binomial")
+coefficients(logistic_auto3_2)
+```
+```{r, echo = TRUE, results ='asis'}
+# q4 - Consider the insect spray data InsectSprays. Fit a Poisson model using spray as a factor level. Report the 
+# estimated relative rate comapring spray A (numerator) to spray B (denominator).
+str(InsectSprays)
+poisson_glm_insect <- glm(formula = count ~ spray, family = "poisson", 
+                          data = InsectSprays)
+summary(poisson_glm_insect)
+```
+```{r, echo = TRUE, results ='asis'}
+# q5 - Consider a Poisson glm with an offset, t. So, for example, a model of the form glm(count ~ x + offset(t), family = 
+# poisson) where x is a factor variable comparing a treatment (1) to a control (0) and t is the natural log of a 
+# monitoring time. What is impact of the coefficient for x if we fit the model glm(count ~ x + offset(t2), family = 
+# poisson) where t2 <- log(10) + t? In other words, what happens to the coefficients if we change the units of the 
+# offset variable. (Note, adding log(10) on the log scale is multiplying by 10 on the original scale.)
+# The coefficient estimate is unchanged
+```
+```{r, echo = TRUE, results ='asis'}
+# q6 - Consider the data
+x <- -5:5
+y <- c(5.12, 3.93, 2.67, 1.87, 0.52, 0.08, 0.93, 2.05, 2.54, 3.87, 4.97)
+```

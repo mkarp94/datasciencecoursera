@@ -1,0 +1,148 @@
+---
+author: "Michael Karp"
+title: "Practical Machine Learning - Quiz4 - Data Science Specialization"
+date: 2/1/2015
+output: 
+html_document:
+keep_md: true
+---  
+```{r, echo = TRUE, results ='asis'}
+# q1 - Load the vowel.train and vowel.test data sets:
+library(ElemStatLearn)
+data(vowel.train)
+data(vowel.test) 
+# Set the variable y to be a factor variable in both the training and test set. Then set the seed to 33833. Fit (1) a 
+# random forest predictor relating the factor variable y to the remaining variables and (2) a boosted predictor using the 
+# "gbm" method. Fit these both with the train() command in the caret package. 
+# What are the accuracies for the two approaches on the test data set? What is the accuracy among the test set samples 
+# where the two methods agree?
+vowel.train$y <- as.factor(vowel.train$y)
+vowel.test$y <- as.factor(vowel.test$y)
+set.seed(33833)
+library(caret)
+library(randomForest)
+library(psych) # library for calculating trace of a square matrix
+# random forest model
+vowel_rf = train(y~., data = vowel.train, method = "rf", metric = "Accuracy")
+predictTest <- predict(vowel_rf, type = "raw", newdata = vowel.test)
+confusionMatrix(vowel.test$y, predictTest)
+predictTest_accuracy <- tr(confusionMatrix(vowel.test$y, predictTest)$table)/nrow(vowel.test)
+predictTest_accuracy
+# gradient boosted regression
+vowel_gbm = train(y~., data = vowel.train, method = "gbm", metric = "Accuracy")
+predictTest2 <- predict(vowel_gbm, type = "raw", newdata = vowel.test)
+# confusionMatrix(vowel.test$y, predictTest2)
+confusionMatrix(vowel.test$y, predictTest2)$table
+predictTest2_accuracy <- tr(confusionMatrix(vowel.test$y, predictTest2)$table)/nrow(vowel.test)
+predictTest2_accuracy
+# combined predictions
+library(ISLR); library(ggplot2); 
+summary(predictTest)
+summary(predictTest2)
+predDF <- data.frame(predictTest,predictTest2,y=vowel.train$y)
+combModFit <- train(y~.,method="gam",data=predDF, metric = "Accuracy")
+combPred <- predict(combModFit,predDF)
+# predictTestC <- predict(combined_predictions, type = "raw", newdata = vowel.test)
+predictTestC_accuracy <- tr(confusionMatrix(vowel.test$y, combPred)$table)/nrow(vowel.test)
+predictTestC_accuracy
+```
+```{r, echo = TRUE, results ='asis'}
+# q2 - Load the Alzheimer's data using the following commands
+library(caret)
+library(gbm)
+set.seed(3433)
+library(AppliedPredictiveModeling)
+data(AlzheimerDisease)
+adData = data.frame(diagnosis,predictors)
+inTrain = createDataPartition(adData$diagnosis, p = 3/4)[[1]]
+training = adData[ inTrain,]
+testing = adData[-inTrain,]
+# Set the seed to 62433 and predict diagnosis with all the other variables using a random forest ("rf"), boosted trees 
+# ("gbm") and linear discriminant analysis ("lda") model. Stack the predictions together using random forests ("rf"). 
+# What is the resulting accuracy on the test set? Is it better or worse than each of the individual predictions?
+set.seed(62433)
+#randomForest
+Alz_rf = train(diagnosis~., data = training, method = "rf")
+predictTest <- predict(Alz_rf, type = "raw", newdata = testing)
+confusionMatrix(testing$diagnosis, predictTest)
+predictTest_accuracy <- tr(confusionMatrix(testing$diagnosis, predictTest)$table)/nrow(testing)
+predictTest_accuracy
+# 0.7804878
+# gradient boosted regression
+Alz_gbm = train(diagnosis~., data = training, method = "gbm")
+predictTest2 <- predict(Alz_gbm, type = "raw", newdata = testing)
+# confusionMatrix(vowel.test$y, predictTest2)
+confusionMatrix(vowel.test$y, predictTest2)$table
+predictTest2_accuracy <- tr(confusionMatrix(testing$diagnosis, predictTest2)$table)/nrow(testing)
+predictTest2_accuracy
+# 0.804878
+# lda
+Alz_lda = train(diagnosis~., data = training, method = "lda")
+predictTest3 <- predict(Alz_lda, type = "raw", newdata = testing)
+# confusionMatrix(vowel.test$y, predictTest2)
+confusionMatrix(vowel.test$y, predictTest3)$table
+predictTest3_accuracy <- tr(confusionMatrix(testing$diagnosis, predictTest3)$table)/nrow(testing)
+predictTest3_accuracy
+# 0.7682927
+
+# combined predictions
+predDF <- data.frame(predictTest,predictTest2,diagnosis = testing$diagnosis)
+combModFit <- train(diagnosis~.,method="rf",data=predDF)
+combPred <- predict(combModFit,predDF)
+# predictTestC <- predict(combined_predictions, type = "raw", newdata = testing)
+predictTestC_accuracy <- tr(confusionMatrix(testing$diagnosis, combPred)$table)/nrow(testing)
+predictTestC_accuracy
+#  0.804878
+```
+```{r, echo = TRUE, results ='asis'}
+# q3 - Load the concrete data with the commands:
+set.seed(3523)
+library(AppliedPredictiveModeling)
+data(concrete)
+inTrain = createDataPartition(concrete$CompressiveStrength, p = 3/4)[[1]]
+training = concrete[ inTrain,]
+testing = concrete[-inTrain,]
+# Set the seed to 233 and fit a lasso model to predict Compressive Strength. Which variable is the last coefficient to 
+# be set to zero as the penalty increases? (Hint: it may be useful to look up ?plot.enet).
+set.seed(233)
+concrete_enet = train(CompressiveStrength~., data = training, method = "lasso")
+predictTest <- predict(concrete_enet, newdata = testing)
+predictTest_error <- sqrt(sum((predictTest-testing$CompressiveStrength)^2))
+predictTest_error
+plot(concrete_enet, xvar = "penalty")
+```
+```{r, echo = TRUE, results ='asis'}
+# q4 - Load the data on the number of visitors to the instructors blog from here: 
+# https://d396qusza40orc.cloudfront.net/predmachlearn/gaData.csv
+#Using the commands:
+
+library(lubridate)  # For year() function below
+dat = read.csv("gaData.csv")
+training = dat[year(dat$date) < 2012,]
+testing = dat[(year(dat$date)) > 2011,]
+tstrain = ts(training$visitsTumblr)
+#Fit a model using the bats() function in the forecast package to the training time series. Then forecast this model for 
+# the remaining time points. For how many of the testing points is the true value within the 95% prediction interval 
+# bounds?
+library(forecast)
+visitors.fit <- bats(tstrain)
+plot(forecast(tstrain))
+lines(testing,col="red")
+```
+```{r, echo = TRUE, results ='asis'}
+# q5 - Load the concrete data with the commands:
+set.seed(3523)
+library(AppliedPredictiveModeling)
+data(concrete)
+inTrain = createDataPartition(concrete$CompressiveStrength, p = 3/4)[[1]]
+training = concrete[ inTrain,]
+testing = concrete[-inTrain,]
+# Set the seed to 325 and fit a support vector machine using the e1071 package to predict Compressive Strength using the 
+# default settings. Predict on the testing set. What is the RMSE?
+set.seed(325)
+library(e1071)
+concrete_svm = svm(CompressiveStrength~., data = training)
+predictTest <- predict(concrete_svm, newdata = testing)
+predictTest_error <- sqrt(sum((predictTest-testing$CompressiveStrength)^2))
+predictTest_error
+```
